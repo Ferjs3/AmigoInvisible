@@ -1,0 +1,8 @@
+.profile-title {
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.saved-msg {
+  color: var(--success);
+}

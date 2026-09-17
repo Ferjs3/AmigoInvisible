@@ -1,0 +1,46 @@
+.install-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: var(--primary-dark);
+  color: var(--surface);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.install-bar-text {
+  font-size: 12px;
+}
+
+.install-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.install-dismiss {
+  color: color-mix(in srgb, var(--surface) 65%, transparent);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+.modal-sheet {
+  margin: 0 16px;
+}
+
+.ios-steps {
+  font-size: 14px;
+  color: var(--fg-muted);
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 20px;
+}

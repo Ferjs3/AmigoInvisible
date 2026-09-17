@@ -1,0 +1,11 @@
+.exclusion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.exclusion-form {
+  display: flex;
+  gap: 8px;
+}

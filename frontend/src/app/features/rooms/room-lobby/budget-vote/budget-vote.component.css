@@ -1,0 +1,19 @@
+.budget-line {
+  margin-bottom: 12px;
+}
+
+.tie-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ask-row {
+  display: flex;
+  gap: 8px;
+}
+
+.already-voted {
+  color: var(--success);
+  margin-top: 8px;
+}

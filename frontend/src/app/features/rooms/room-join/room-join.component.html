@@ -1,0 +1,56 @@
+<div class="page">
+  <div class="panel">
+    <a routerLink="/rooms" class="back-link">&larr; Volver</a>
+
+    @if (!preview()) {
+      <h1 class="title search-title">Unirme a una sala</h1>
+      <p class="subtitle">Pedile el código a quien organiza el sorteo.</p>
+
+      <label class="form-field code-field">
+        <span class="form-label">Código de la sala</span>
+        <input
+          class="form-input form-input--uppercase"
+          type="text"
+          [(ngModel)]="code"
+          name="code"
+          placeholder="Ej: 7F3K9Q"
+          maxlength="6"
+        />
+      </label>
+
+      @if (error()) {
+        <p class="field-error search-error">{{ error() }}</p>
+      }
+
+      <button (click)="search()" [disabled]="loading() || code.trim().length < 4" class="btn btn--primary btn--block">
+        {{ loading() ? 'Buscando…' : 'Buscar sala' }}
+      </button>
+    } @else {
+      <p class="eyebrow found-eyebrow">Encontramos esta sala</p>
+      <h1 class="title title--tight">{{ preview()!.name }}</h1>
+
+      <div class="surface-block preview-box">
+        <p class="hint-text hint-text--lg preview-admin">Organiza {{ preview()!.adminDisplayName }}</p>
+        <div class="preview-meta">
+          <span>{{ preview()!.eventDate ? (preview()!.eventDate | date: 'dd/MM/yyyy') : 'sin fecha' }}</span>
+          <span>{{ preview()!.participantCount }} anotados</span>
+          @if (preview()!.suggestedBudget) {
+            <span>hasta {{ '$' + preview()!.suggestedBudget }}</span>
+          }
+        </div>
+      </div>
+
+      @if (!preview()!.canJoin) {
+        <p class="field-error join-blocked">Esta sala ya sorteó, no se pueden sumar participantes.</p>
+      }
+
+      @if (error()) {
+        <p class="field-error join-blocked">{{ error() }}</p>
+      }
+
+      <button (click)="confirmJoin()" [disabled]="loading() || !preview()!.canJoin" class="btn btn--primary btn--block">
+        {{ loading() ? 'Uniéndote…' : 'Unirme a esta sala' }}
+      </button>
+    }
+  </div>
+</div>

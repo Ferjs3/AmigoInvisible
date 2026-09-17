@@ -1,0 +1,40 @@
+.participant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.participant-identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.participant-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ready-toggle {
+  border: none;
+  cursor: pointer;
+}
+
+.leave-link {
+  margin-top: 16px;
+  display: block;
+  text-decoration: underline;
+}
+
+.draw-box {
+  margin-top: 20px;
+  background: var(--primary-dark);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.draw-hint {
+  color: color-mix(in srgb, var(--surface) 85%, transparent);
+  margin-bottom: 10px;
+}

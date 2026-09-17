@@ -1,0 +1,23 @@
+.success-block {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.success-block .hint-text {
+  margin-bottom: 8px;
+}
+
+.code-chip {
+  display: inline-block;
+  background: var(--primary-dark);
+  color: var(--surface);
+  font-size: 24px;
+  letter-spacing: 6px;
+  border-radius: 12px;
+  padding: 12px 24px;
+  margin: 0 0 24px;
+}
+
+.title {
+  margin-top: 12px;
+}

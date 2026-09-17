@@ -1,0 +1,46 @@
+<div class="page">
+  <div class="panel panel--wide">
+    <p class="eyebrow">Amigo invisible</p>
+    <div class="header-row">
+      <div class="greeting">
+        <app-avatar [name]="authService.currentUser()?.displayName ?? '?'" size="lg" />
+        <h1 class="title title--tight">Hola, {{ authService.currentUser()?.displayName }}</h1>
+      </div>
+      <div class="header-links">
+        <a routerLink="/profile" class="link link--muted">Mi perfil</a>
+        <button (click)="authService.logout()" class="link link--muted">Cerrar sesión</button>
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <a routerLink="/rooms/new" class="btn btn--primary action-btn">+ Crear sala</a>
+      <a routerLink="/rooms/join" class="btn btn--outline action-btn">Unirme con código</a>
+    </div>
+
+    <h2 class="section-heading">Tus salas</h2>
+
+    @if (loading()) {
+      <p class="hint-text hint-text--lg">Cargando…</p>
+    } @else if (rooms().length === 0) {
+      <p class="hint-text hint-text--lg hint-text--italic">Todavía no sos parte de ninguna sala.</p>
+    } @else {
+      <div class="room-list">
+        @for (room of rooms(); track room.id) {
+          <a [routerLink]="['/rooms', room.id]" class="room-card">
+            <div class="row-between">
+              <div>
+                <p class="room-card-name">{{ room.name }}</p>
+                <p class="hint-text">{{ room.isAdmin ? 'Sos el admin' : 'Participante' }}</p>
+              </div>
+              <span [class]="statusClass(room.status)">{{ statusLabel(room.status) }}</span>
+            </div>
+            <div class="room-card-meta">
+              <span>{{ room.eventDate ? (room.eventDate | date: 'dd/MM/yyyy') : 'sin fecha' }}</span>
+              <span>{{ room.participantCount }} personas</span>
+            </div>
+          </a>
+        }
+      </div>
+    }
+  </div>
+</div>

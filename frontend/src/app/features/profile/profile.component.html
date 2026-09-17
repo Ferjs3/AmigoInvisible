@@ -1,0 +1,34 @@
+<div class="page">
+  <div class="panel">
+    <a routerLink="/rooms" class="back-link">&larr; Volver</a>
+    <h1 class="title profile-title">Mi perfil</h1>
+    <p class="subtitle">Así te ven los demás en tus salas.</p>
+
+    <form (ngSubmit)="submit()" class="form-stack">
+      <label class="form-field">
+        <span class="form-label">Nombre (como te ven los demás)</span>
+        <input class="form-input" type="text" [(ngModel)]="displayName" name="displayName" required />
+      </label>
+
+      <label class="form-field">
+        <span class="form-label">Usuario (para iniciar sesión)</span>
+        <input class="form-input" type="text" [(ngModel)]="username" name="username" required />
+      </label>
+
+      <p class="hint-text hint-text--italic">
+        El email ({{ authService.currentUser()?.email }}) no se puede editar por acá todavía.
+      </p>
+
+      @if (error()) {
+        <p class="field-error">{{ error() }}</p>
+      }
+      @if (saved()) {
+        <p class="hint-text saved-msg">Guardado ✓</p>
+      }
+
+      <button type="submit" [disabled]="loading()" class="btn btn--primary">
+        {{ loading() ? 'Guardando…' : 'Guardar cambios' }}
+      </button>
+    </form>
+  </div>
+</div>

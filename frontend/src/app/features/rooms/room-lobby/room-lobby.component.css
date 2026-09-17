@@ -1,0 +1,144 @@
+.lobby-container {
+  max-width: 512px;
+  margin: 0 auto;
+}
+
+.page-error-text {
+  color: var(--surface);
+}
+
+/* --- ticket header --- */
+.ticket-header {
+  background: var(--surface);
+  border-radius: 16px 16px 0 0;
+  padding: 24px 28px 20px;
+  border-bottom: 2px dashed color-mix(in srgb, var(--fg) 20%, transparent);
+}
+
+.ticket-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-links {
+  display: flex;
+  gap: 12px;
+}
+
+.ticket-eyebrow {
+  margin: 8px 0 0;
+}
+
+.ticket-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.ticket-title {
+  margin: 0;
+}
+
+.code-chip {
+  background: var(--primary-dark);
+  color: var(--surface);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.code-chip-status {
+  font-size: 10px;
+  letter-spacing: normal;
+  opacity: 0.85;
+}
+
+.ticket-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+
+.days-counter {
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+.invite-btn {
+  margin-top: 14px;
+}
+
+/* --- tabs --- */
+.tabs-row {
+  background: var(--surface);
+  display: flex;
+  padding: 0 20px;
+  border-bottom: 1px solid color-mix(in srgb, var(--fg) 10%, transparent);
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 10px;
+  font-size: 14px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+
+.tab-button--active {
+  color: var(--primary-dark);
+  font-weight: 600;
+  border-bottom-color: var(--primary);
+}
+
+/* --- body --- */
+.lobby-error-bar {
+  background: var(--surface);
+  padding: 8px 28px;
+}
+
+.lobby-body {
+  background: var(--surface);
+  border-radius: 0 0 16px 16px;
+  padding: 20px 28px 28px;
+  min-height: 320px;
+}
+
+.lobby-section-divider {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid color-mix(in srgb, var(--fg) 10%, transparent);
+}
+
+/* --- modal --- */
+.modal-card {
+  max-width: 384px;
+}
+
+.modal-text {
+  margin-bottom: 20px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.modal-actions .btn {
+  flex: 1;
+}

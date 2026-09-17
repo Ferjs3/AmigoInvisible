@@ -1,0 +1,53 @@
+.ask-box {
+  margin-bottom: 20px;
+}
+
+.ask-label {
+  margin-bottom: 8px;
+}
+
+.ask-row {
+  display: flex;
+  gap: 8px;
+}
+
+.ask-error {
+  margin-top: 8px;
+}
+
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  max-height: 256px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.question-card {
+  padding: 12px 14px;
+}
+
+.question-target {
+  margin-bottom: 4px;
+}
+
+.question-text {
+  font-size: 14px;
+  color: var(--fg);
+  font-style: italic;
+  margin: 0;
+}
+
+.question-answer {
+  font-size: 14px;
+  color: var(--success);
+  margin: 6px 0 0;
+}
+
+.reply-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}

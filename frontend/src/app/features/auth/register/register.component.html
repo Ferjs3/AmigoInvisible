@@ -1,0 +1,58 @@
+<div class="page page--centered">
+  <div class="panel">
+    <p class="eyebrow">Amigo invisible</p>
+    <h1 class="title">Crear cuenta</h1>
+
+    <form (ngSubmit)="submit()" class="form-stack">
+      <label class="form-field">
+        <span class="form-label">Usuario</span>
+        <input class="form-input" type="text" [(ngModel)]="username" name="username" required />
+      </label>
+
+      <label class="form-field">
+        <span class="form-label">Nombre (como te van a ver los demás)</span>
+        <input class="form-input" type="text" [(ngModel)]="displayName" name="displayName" required />
+      </label>
+
+      <label class="form-field">
+        <span class="form-label">Email</span>
+        <input class="form-input" type="email" [(ngModel)]="email" name="email" required />
+      </label>
+
+      <label class="form-field">
+        <span class="form-label">Contraseña</span>
+        <div class="password-field">
+          <input
+            class="form-input"
+            [type]="showPassword() ? 'text' : 'password'"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="6"
+          />
+          <button
+            type="button"
+            (click)="showPassword.set(!showPassword())"
+            class="password-toggle"
+            [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          >
+            {{ showPassword() ? '🙈' : '👁' }}
+          </button>
+        </div>
+      </label>
+
+      @if (error()) {
+        <p class="field-error">{{ error() }}</p>
+      }
+
+      <button type="submit" [disabled]="loading()" class="btn btn--primary btn--block">
+        {{ loading() ? 'Creando cuenta…' : 'Crear cuenta' }}
+      </button>
+    </form>
+
+    <p class="footer-note">
+      ¿Ya tenés cuenta?
+      <a routerLink="/login" queryParamsHandling="preserve" class="link link--primary">Iniciá sesión</a>
+    </p>
+  </div>
+</div>

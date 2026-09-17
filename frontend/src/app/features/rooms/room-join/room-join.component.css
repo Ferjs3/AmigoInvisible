@@ -1,0 +1,35 @@
+.search-title {
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.code-field {
+  margin-bottom: 12px;
+}
+
+.search-error {
+  margin-bottom: 12px;
+}
+
+.found-eyebrow {
+  margin-top: 12px;
+}
+
+.preview-box {
+  margin-bottom: 20px;
+}
+
+.preview-admin {
+  margin-bottom: 6px;
+}
+
+.preview-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+
+.join-blocked {
+  margin-bottom: 12px;
+}

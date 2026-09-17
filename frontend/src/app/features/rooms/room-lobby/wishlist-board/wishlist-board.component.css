@@ -1,0 +1,40 @@
+.wishlist-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wishlist-owner {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wishlist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wishlist-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--fg);
+}
+
+.wishlist-delete {
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.wishlist-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
