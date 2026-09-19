@@ -12,6 +12,7 @@ import {
 
 export interface CreateRoomPayload {
   name: string;
+  icon?: string | null;
   suggestedBudget?: number | null;
   eventDate?: string | null;
   place?: string | null;

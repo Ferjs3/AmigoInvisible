@@ -80,6 +80,7 @@ public class AuthService {
 
         currentUser.setUsername(request.username());
         currentUser.setDisplayName(request.displayName());
+        currentUser.setAvatarIcon(request.avatarIcon());
         User saved = userRepository.save(currentUser);
 
         return toUserResponse(saved);
@@ -101,6 +102,7 @@ public class AuthService {
                 user.getId(),
                 user.getUsername(),
                 user.getDisplayNameOrUsername(),
+                user.getAvatarIcon(),
                 user.getEmail()
         );
     }

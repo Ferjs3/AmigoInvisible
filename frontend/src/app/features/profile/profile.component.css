@@ -6,3 +6,22 @@
 .saved-msg {
   color: var(--success);
 }
+
+.avatar-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.icon-picker {
+  flex: 1;
+}
+
+.avatar-icon-option {
+  width: auto;
+  height: auto;
+  padding: 3px;
+  background: transparent;
+  border-color: transparent;
+}

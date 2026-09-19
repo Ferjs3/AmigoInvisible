@@ -2,6 +2,7 @@ export interface UserResponse {
   id: number;
   username: string;
   displayName: string;
+  avatarIcon: string | null;
   email: string;
 }
 
@@ -16,6 +17,7 @@ export type ParticipantStatus = 'PENDING' | 'READY';
 export interface RoomSummary {
   id: number;
   name: string;
+  icon: string | null;
   code: string;
   status: RoomStatus;
   eventDate: string | null;
@@ -25,6 +27,7 @@ export interface RoomSummary {
 
 export interface RoomPreview {
   name: string;
+  icon: string | null;
   adminDisplayName: string;
   eventDate: string | null;
   suggestedBudget: number | null;
@@ -35,6 +38,7 @@ export interface RoomPreview {
 export interface ParticipantResponse {
   userId: number;
   displayName: string;
+  avatarIcon: string | null;
   status: ParticipantStatus;
   isMe: boolean;
 }
@@ -42,6 +46,7 @@ export interface ParticipantResponse {
 export interface RoomDetail {
   id: number;
   name: string;
+  icon: string | null;
   code: string;
   status: RoomStatus;
   suggestedBudget: number | null;

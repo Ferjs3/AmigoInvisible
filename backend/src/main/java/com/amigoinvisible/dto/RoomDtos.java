@@ -14,6 +14,7 @@ public class RoomDtos {
 
     public record CreateRoomRequest(
             @NotBlank @Size(max = 100) String name,
+            @Size(max = 20) String icon,
             BigDecimal suggestedBudget,
             LocalDate eventDate,
             @Size(max = 150) String place,
@@ -23,6 +24,7 @@ public class RoomDtos {
     // Mismos campos que crear: el admin puede corregir cualquiera de estos despues.
     public record UpdateRoomRequest(
             @NotBlank @Size(max = 100) String name,
+            @Size(max = 20) String icon,
             BigDecimal suggestedBudget,
             LocalDate eventDate,
             @Size(max = 150) String place,
@@ -33,6 +35,7 @@ public class RoomDtos {
     public record RoomSummaryResponse(
             Long id,
             String name,
+            String icon,
             String code,
             RoomStatus status,
             LocalDate eventDate,
@@ -43,6 +46,7 @@ public class RoomDtos {
     // Vista publica antes de unirse (GET /rooms/{code})
     public record RoomPreviewResponse(
             String name,
+            String icon,
             String adminDisplayName,
             LocalDate eventDate,
             BigDecimal suggestedBudget,
@@ -54,6 +58,7 @@ public class RoomDtos {
     public record RoomDetailResponse(
             Long id,
             String name,
+            String icon,
             String code,
             RoomStatus status,
             BigDecimal suggestedBudget,
@@ -67,6 +72,7 @@ public class RoomDtos {
     public record ParticipantResponse(
             Long userId,
             String displayName,
+            String avatarIcon,
             ParticipantStatus status,
             boolean isMe
     ) {}

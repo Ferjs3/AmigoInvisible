@@ -27,7 +27,10 @@
       </button>
     } @else {
       <p class="eyebrow found-eyebrow">Encontramos esta sala</p>
-      <h1 class="title title--tight">{{ preview()!.name }}</h1>
+      <h1 class="title title--tight title--with-icon">
+        <span class="ticket-icon">{{ preview()!.icon ?? '🎁' }}</span>
+        {{ preview()!.name }}
+      </h1>
 
       <div class="surface-block preview-box">
         <p class="hint-text hint-text--lg preview-admin">Organiza {{ preview()!.adminDisplayName }}</p>

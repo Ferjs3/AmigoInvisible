@@ -3,7 +3,7 @@
     <p class="eyebrow">Amigo invisible</p>
     <div class="header-row">
       <div class="greeting">
-        <app-avatar [name]="authService.currentUser()?.displayName ?? '?'" size="lg" />
+        <app-avatar [name]="authService.currentUser()?.displayName ?? '?'" [icon]="authService.currentUser()?.avatarIcon ?? null" size="lg" />
         <h1 class="title title--tight">Hola, {{ authService.currentUser()?.displayName }}</h1>
       </div>
       <div class="header-links">
@@ -28,15 +28,18 @@
         @for (room of rooms(); track room.id) {
           <a [routerLink]="['/rooms', room.id]" class="room-card">
             <div class="row-between">
-              <div>
-                <p class="room-card-name">{{ room.name }}</p>
-                <p class="hint-text">{{ room.isAdmin ? 'Sos el admin' : 'Participante' }}</p>
+              <div class="room-card-identity">
+                <span class="room-card-icon">{{ room.icon ?? '🎁' }}</span>
+                <div>
+                  <p class="room-card-name">{{ room.name }}</p>
+                  <p class="hint-text">{{ room.isAdmin ? 'Sos el admin' : 'Participante' }}</p>
+                </div>
               </div>
               <span [class]="statusClass(room.status)">{{ statusLabel(room.status) }}</span>
             </div>
             <div class="room-card-meta">
               <span>{{ room.eventDate ? (room.eventDate | date: 'dd/MM/yyyy') : 'sin fecha' }}</span>
-              <span>{{ room.participantCount }} personas</span>
+              <span>{{ room.participantCount }} {{ room.participantCount === 1 ? 'persona' : 'personas' }}</span>
             </div>
           </a>
         }

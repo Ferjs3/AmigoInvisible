@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { RoomService } from '../../../core/services/room.service';
+import { ROOM_ICON_OPTIONS } from '../../../core/constants/room-icons';
 
 @Component({
   selector: 'app-room-create',
@@ -12,7 +13,10 @@ import { RoomService } from '../../../core/services/room.service';
   styleUrl: './room-create.component.css',
 })
 export class RoomCreateComponent {
+  iconOptions = ROOM_ICON_OPTIONS;
+
   name = '';
+  icon: string = this.iconOptions[0];
   suggestedBudget: number | null = null;
   eventDate = '';
   place = '';
@@ -34,6 +38,7 @@ export class RoomCreateComponent {
     this.roomService
       .create({
         name: this.name,
+        icon: this.icon,
         suggestedBudget: this.suggestedBudget,
         eventDate: this.eventDate || null,
         place: this.place || null,

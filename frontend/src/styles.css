@@ -17,10 +17,7 @@
   --danger: #C22D30;       /* alertas, acciones destructivas */
 }
 
-/* Modo oscuro: mismas 9 variables, otros valores. Se activa agregando
-   la clase .dark-theme al <body> (lo hace ThemeService). Como todo el
-   resto de la app usa var(--nombre) en vez de colores sueltos, no hace
-   falta tocar NINGUN componente para que el modo oscuro funcione. */
+/* Modo oscuro: mismas 9 variables, otros valores. */
 body.dark-theme {
   --canvas: #14181D;
   --surface: #1F242B;
@@ -31,6 +28,41 @@ body.dark-theme {
   --fg-muted: #98A4AF;
   --success: #5FA377;
   --danger: #E1595C;
+}
+
+/* ============================================================
+   BOTON TOGGLE TEMA
+   ============================================================ */
+.theme-toggle {
+  background: var(--surface);
+  border: 1px solid var(--fg-muted);
+  color: var(--fg);
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--surface-dim);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: scale(1.05);
+}
+
+body.dark-theme .theme-toggle {
+  background: var(--surface-dim);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #FFB800;
+}
+
+body.dark-theme .theme-toggle:hover {
+  border-color: #FFB800;
+  box-shadow: 0 0 10px rgba(255, 184, 0, 0.25);
 }
 
 * {
@@ -100,6 +132,16 @@ body {
 
 .title--tight {
   margin-bottom: 4px;
+}
+
+.title--with-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ticket-icon {
+  font-size: 22px;
 }
 
 .subtitle {
@@ -188,8 +230,8 @@ textarea.form-input {
   font-size: 14px;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid rgba(44, 62, 80, 0.2);
-  background: #fff;
+  border: 1px solid var(--fg-muted);
+  background: var(--surface-dim);
   color: var(--fg);
   box-sizing: border-box;
   font-family: inherit;
@@ -197,6 +239,35 @@ textarea.form-input {
 
 .form-input--uppercase {
   text-transform: uppercase;
+}
+
+/* ============================================================
+   SELECTOR DE ICONO DE SALA
+   ============================================================ */
+.icon-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.icon-option {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--fg-muted);
+  background: var(--surface-dim);
+  color: var(--fg);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.icon-option--selected {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 20%, var(--surface));
 }
 
 .password-field {
@@ -218,11 +289,17 @@ textarea.form-input {
   color: var(--fg-muted);
   font-size: 12px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle:hover {
+  color: var(--fg);
 }
 
 /* ============================================================
    BOTONES COMPARTIDOS
-   Un solo sistema con modificadores en vez de una clase por boton.
    ============================================================ */
 .btn {
   display: inline-flex;
@@ -280,7 +357,6 @@ textarea.form-input {
   color: var(--surface);
 }
 
-/* botones-link: se ven como texto, actuan como boton */
 .link {
   background: none;
   border: none;
@@ -314,8 +390,6 @@ textarea.form-input {
 
 /* ============================================================
    CHIPS / TAGS DE ESTADO
-   Los tonos clarito de fondo se calculan con color-mix(), no
-   hace falta guardar un --xxx-bg por cada estado.
    ============================================================ */
 .tag {
   display: inline-flex;
@@ -328,22 +402,25 @@ textarea.form-input {
 }
 
 .tag--success {
-  color: var(--success);
-  background: color-mix(in srgb, var(--success) 16%, white);
+  color: var(--canvas);
+  background-color: var(--success);
+  font-weight: bold;
 }
 
 .tag--danger {
-  color: var(--danger);
-  background: color-mix(in srgb, var(--danger) 14%, white);
+  color: var(--canvas);
+  background-color: var(--danger);
+  font-weight: bold;
 }
 
 .tag--primary {
-  color: var(--primary-dark);
-  background: color-mix(in srgb, var(--primary) 18%, white);
+  color: var(--canvas);
+  background-color: var(--fg-muted);
+  font-weight: bold;
 }
 
 /* ============================================================
-   LISTAS DE ITEMS (participantes, sugerencias, preguntas, etc.)
+   LISTAS DE ITEMS
    ============================================================ */
 .list-row {
   display: flex;
@@ -358,7 +435,6 @@ textarea.form-input {
 
 /* ============================================================
    MODAL COMPARTIDO
-   Usado por: install-button (ayuda iOS), room-lobby (confirmaciones)
    ============================================================ */
 .modal-overlay {
   position: fixed;

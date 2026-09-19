@@ -54,6 +54,17 @@
   opacity: 0.9;
 }
 
+.room-card-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.room-card-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
 .room-card-name {
   font-size: 14px;
   font-weight: 600;

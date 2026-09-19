@@ -6,6 +6,27 @@
 
     <form (ngSubmit)="submit()" class="form-stack">
       <label class="form-field">
+        <span class="form-label">Tu ícono</span>
+        <div class="avatar-preview-row">
+          <app-avatar [name]="displayName || '?'" [icon]="avatarIcon" size="lg" />
+          <div class="icon-picker">
+            @for (opt of iconOptions; track opt.key) {
+              <button
+                type="button"
+                (click)="selectIcon(opt.key)"
+                class="icon-option avatar-icon-option"
+                [class.icon-option--selected]="avatarIcon === opt.key"
+                [title]="opt.label"
+              >
+                <app-avatar name="?" [icon]="opt.key" size="sm" />
+              </button>
+            }
+          </div>
+        </div>
+        <p class="hint-text">Tocá uno para elegirlo, o tocalo de nuevo para volver a tus iniciales.</p>
+      </label>
+
+      <label class="form-field">
         <span class="form-label">Nombre (como te ven los demás)</span>
         <input class="form-input" type="text" [(ngModel)]="displayName" name="displayName" required />
       </label>

@@ -37,6 +37,7 @@ public class RoomService {
 
         Room room = Room.builder()
                 .name(request.name())
+                .icon(request.icon())
                 .code(roomCodeGenerator.generateUniqueCode())
                 .admin(admin)
                 .suggestedBudget(request.suggestedBudget())
@@ -65,6 +66,7 @@ public class RoomService {
                 .map(room -> new RoomSummaryResponse(
                         room.getId(),
                         room.getName(),
+                        room.getIcon(),
                         room.getCode(),
                         room.getStatus(),
                         room.getEventDate(),
@@ -79,6 +81,7 @@ public class RoomService {
         Room room = findByCode(code);
         return new RoomPreviewResponse(
                 room.getName(),
+                room.getIcon(),
                 room.getAdmin().getDisplayNameOrUsername(),
                 room.getEventDate(),
                 room.getSuggestedBudget(),
@@ -126,6 +129,7 @@ public class RoomService {
         }
 
         room.setName(request.name());
+        room.setIcon(request.icon());
         room.setSuggestedBudget(request.suggestedBudget());
         room.setEventDate(request.eventDate());
         room.setPlace(request.place());
@@ -331,6 +335,7 @@ public class RoomService {
                 .map(p -> new ParticipantResponse(
                         p.getUser().getId(),
                         p.getUser().getDisplayNameOrUsername(),
+                        p.getUser().getAvatarIcon(),
                         p.getStatus(),
                         p.getUser().getId().equals(viewer.getId())
                 ))
@@ -339,6 +344,7 @@ public class RoomService {
         return new RoomDetailResponse(
                 room.getId(),
                 room.getName(),
+                room.getIcon(),
                 room.getCode(),
                 room.getStatus(),
                 room.getSuggestedBudget(),

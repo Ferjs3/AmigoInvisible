@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AvatarComponent {
   @Input({ required: true }) name!: string;
+  @Input() icon: string | null = null;
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
 
   initials(): string {

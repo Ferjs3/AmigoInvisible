@@ -12,6 +12,7 @@ import { WishlistBoardComponent } from './wishlist-board/wishlist-board.componen
 import { QuestionsWallComponent } from './questions-wall/questions-wall.component';
 import { ExclusionsManagerComponent } from './exclusions-manager/exclusions-manager.component';
 import { BudgetVoteComponent } from './budget-vote/budget-vote.component';
+import { ROOM_ICON_OPTIONS } from '../../../core/constants/room-icons';
 
 type Tab = 'resumen' | 'amigo' | 'tablon' | 'preguntas';
 type ConfirmAction = 'draw' | 'delete' | null;
@@ -44,8 +45,10 @@ export class RoomLobbyComponent implements OnInit, OnDestroy {
   sharing = signal(false);
 
   // edicion de la sala
+  iconOptions = ROOM_ICON_OPTIONS;
   editingRoom = signal(false);
   editName = '';
+  editIcon = '';
   editBudget: number | null = null;
   editDate = '';
   editPlace = '';
@@ -146,6 +149,7 @@ export class RoomLobbyComponent implements OnInit, OnDestroy {
     const room = this.room();
     if (!room) return;
     this.editName = room.name;
+    this.editIcon = room.icon ?? this.iconOptions[0];
     this.editBudget = room.suggestedBudget;
     this.editDate = room.eventDate ?? '';
     this.editPlace = room.place ?? '';
@@ -163,6 +167,7 @@ export class RoomLobbyComponent implements OnInit, OnDestroy {
     this.roomService
       .update(room.id, {
         name: this.editName.trim(),
+        icon: this.editIcon,
         suggestedBudget: this.editBudget,
         eventDate: this.editDate || null,
         place: this.editPlace || null,

@@ -5,7 +5,7 @@
   @for (p of participants; track p.userId) {
     <div class="surface-block">
       <p class="wishlist-owner">
-        <app-avatar [name]="p.displayName" size="sm" />
+        <app-avatar [name]="p.displayName" [icon]="p.avatarIcon" size="sm" />
         {{ p.displayName }}{{ p.isMe ? ' (vos)' : '' }}
       </p>
 

@@ -1,0 +1,4 @@
+# Fuerza que todos los archivos de texto usen LF (no CRLF), sin importar
+# en qué sistema operativo los edites. Esto evita el problema de "git dice
+# que cambiaron 40 archivos" cuando en realidad no cambió nada real.
+* text=auto eol=lf

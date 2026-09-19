@@ -14,7 +14,10 @@
         </div>
         <p class="eyebrow ticket-eyebrow">Sala de amigo invisible</p>
         <div class="ticket-title-row">
-          <h1 class="title ticket-title">{{ room()!.name }}</h1>
+          <h1 class="title ticket-title">
+            <span class="ticket-icon">{{ room()!.icon ?? '🎁' }}</span>
+            {{ room()!.name }}
+          </h1>
           <button (click)="copyCode()" class="code-chip" title="Copiar código">
             {{ room()!.code }}
             <span class="code-chip-status">{{ copied() ? '✓ Copiado' : '⧉' }}</span>
@@ -135,6 +138,21 @@
       <div class="panel modal-card">
         <h2 class="section-heading">Editar sala</h2>
         <form (ngSubmit)="saveEditRoom()" class="form-stack edit-room-form">
+          <label class="form-field">
+            <span class="form-label">Ícono de la sala</span>
+            <div class="icon-picker">
+              @for (opt of iconOptions; track opt) {
+                <button
+                  type="button"
+                  (click)="editIcon = opt"
+                  class="icon-option"
+                  [class.icon-option--selected]="editIcon === opt"
+                >
+                  {{ opt }}
+                </button>
+              }
+            </div>
+          </label>
           <label class="form-field">
             <span class="form-label">Nombre de la sala</span>
             <input class="form-input" type="text" [(ngModel)]="editName" name="editName" required />

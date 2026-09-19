@@ -27,12 +27,15 @@ public class AuthDtos {
             Long id,
             String username,
             String displayName,
+            String avatarIcon,
             String email
     ) {}
 
-    // Para el panel de perfil: cambiar nombre comun y/o username.
+    // Para el panel de perfil: cambiar nombre comun, username y/o icono.
+    // avatarIcon puede venir null (significa "sin icono, mostrar iniciales").
     public record UpdateProfileRequest(
             @NotBlank @Size(min = 3, max = 50) String username,
-            @NotBlank @Size(min = 1, max = 100) String displayName
+            @NotBlank @Size(min = 1, max = 100) String displayName,
+            @Size(max = 20) String avatarIcon
     ) {}
 }

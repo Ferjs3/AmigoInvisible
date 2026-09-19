@@ -23,8 +23,8 @@ export class ThemeService {
 
   private readStoredPreference(): boolean {
     const stored = localStorage.getItem(THEME_KEY);
-    if (stored) return stored === 'dark';
-    // si nunca eligio nada, respeta la preferencia del sistema operativo
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+    // Arranca siempre en modo claro por default. Solo pasa a oscuro si el
+    // usuario lo eligio a mano con el boton (y ahi se guarda en localStorage).
+    return stored === 'dark';
   }
 }

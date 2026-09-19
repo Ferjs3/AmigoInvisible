@@ -27,6 +27,12 @@ public class Room {
     @Column(nullable = false, length = 100)
     private String name;
 
+    // Emoji que el admin elige para identificar la sala de un vistazo
+    // (🎄, 🎁, 🎂, etc). Opcional -- si es null, el frontend muestra uno
+    // por defecto.
+    @Column(length = 20)
+    private String icon;
+
     @Column(nullable = false, length = 6)
     private String code;
 

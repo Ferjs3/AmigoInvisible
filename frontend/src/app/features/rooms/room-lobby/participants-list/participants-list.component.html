@@ -5,7 +5,7 @@
   @for (p of participants; track p.userId) {
     <div class="list-row">
       <span class="participant-identity">
-        <app-avatar [name]="p.displayName" size="sm" />
+        <app-avatar [name]="p.displayName" [icon]="p.avatarIcon" size="sm" />
         {{ p.displayName }}{{ p.isMe ? ' (vos)' : '' }}
       </span>
 

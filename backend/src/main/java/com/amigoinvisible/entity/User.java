@@ -33,6 +33,11 @@ public class User {
     @Column(name = "display_name", length = 100)
     private String displayName;
 
+    // Clave de un icono predefinido (ej. "fox", "panda"), no un archivo.
+    // Null = todavia no eligio, el frontend muestra las iniciales.
+    @Column(name = "avatar_icon", length = 20)
+    private String avatarIcon;
+
     @Column(nullable = false, length = 120)
     private String email;
 

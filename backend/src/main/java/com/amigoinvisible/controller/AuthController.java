@@ -30,7 +30,7 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<UserResponse> me() {
         var user = currentUser.get();
-        return ResponseEntity.ok(new UserResponse(user.getId(), user.getUsername(), user.getDisplayNameOrUsername(), user.getEmail()));
+        return ResponseEntity.ok(new UserResponse(user.getId(), user.getUsername(), user.getDisplayNameOrUsername(), user.getAvatarIcon(), user.getEmail()));
     }
 
     @PatchMapping("/me")
