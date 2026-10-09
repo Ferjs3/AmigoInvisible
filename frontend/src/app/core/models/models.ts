@@ -4,6 +4,7 @@ export interface UserResponse {
   displayName: string;
   avatarIcon: string | null;
   email: string;
+  securityQuestion: string | null;
 }
 
 export interface AuthResponse {

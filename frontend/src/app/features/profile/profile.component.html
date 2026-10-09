@@ -40,6 +40,48 @@
         El email ({{ authService.currentUser()?.email }}) no se puede editar por acá todavía.
       </p>
 
+      <div class="security-section">
+        <p class="form-label">Pregunta de seguridad</p>
+        @if (authService.currentUser()?.securityQuestion) {
+          <p class="hint-text">Actual: {{ authService.currentUser()?.securityQuestion }}</p>
+        } @else {
+          <p class="hint-text hint-text--error">
+            Todavía no configuraste una. Sin ella, no vas a poder recuperar tu cuenta si te olvidás la contraseña.
+          </p>
+        }
+
+        @if (!changingSecurity()) {
+          <button type="button" (click)="changingSecurity.set(true)" class="link link--primary security-toggle">
+            {{ authService.currentUser()?.securityQuestion ? 'Cambiar pregunta de seguridad' : 'Configurar pregunta de seguridad' }}
+          </button>
+        } @else {
+          <div class="form-stack security-fields">
+            <label class="form-field">
+              <span class="form-label">Pregunta</span>
+              <select class="form-select" [(ngModel)]="selectedQuestion" name="selectedQuestion">
+                @for (q of questionOptions; track q) {
+                  <option [value]="q">{{ q }}</option>
+                }
+              </select>
+            </label>
+
+            @if (isCustomQuestion) {
+              <label class="form-field">
+                <span class="form-label">Escribí tu pregunta</span>
+                <input class="form-input" type="text" [(ngModel)]="customQuestion" name="customQuestion" />
+              </label>
+            }
+
+            <label class="form-field">
+              <span class="form-label">Tu respuesta</span>
+              <input class="form-input" type="text" [(ngModel)]="securityAnswer" name="securityAnswer" />
+            </label>
+
+            <button type="button" (click)="changingSecurity.set(false)" class="link link--muted">Cancelar</button>
+          </div>
+        }
+      </div>
+
       @if (error()) {
         <p class="field-error">{{ error() }}</p>
       }

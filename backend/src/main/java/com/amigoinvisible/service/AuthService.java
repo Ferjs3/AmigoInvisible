@@ -3,6 +3,8 @@ package com.amigoinvisible.service;
 import com.amigoinvisible.dto.AuthDtos.AuthResponse;
 import com.amigoinvisible.dto.AuthDtos.LoginRequest;
 import com.amigoinvisible.dto.AuthDtos.RegisterRequest;
+import com.amigoinvisible.dto.AuthDtos.ResetPasswordRequest;
+import com.amigoinvisible.dto.AuthDtos.SecurityQuestionResponse;
 import com.amigoinvisible.dto.AuthDtos.UpdateProfileRequest;
 import com.amigoinvisible.dto.AuthDtos.UserResponse;
 import com.amigoinvisible.entity.AuthToken;
@@ -46,6 +48,8 @@ public class AuthService {
                 .displayName(request.displayName())
                 .email(request.email())
                 .passwordHash(passwordEncoder.encode(request.password()))
+                .securityQuestion(request.securityQuestion().trim())
+                .securityAnswerHash(passwordEncoder.encode(normalizeAnswer(request.securityAnswer())))
                 .build();
         user = userRepository.save(user);
 
@@ -69,8 +73,10 @@ public class AuthService {
         authTokenRepository.deleteByToken(rawToken);
     }
 
-    // Cambia nombre comun y/o username. El username nuevo tiene que estar
-    // libre (o ser el mismo que ya tenia el usuario).
+    // Cambia nombre comun, username, icono y/o la pregunta de seguridad.
+    // El username nuevo tiene que estar libre (o ser el mismo que ya tenia).
+    // La pregunta de seguridad solo se actualiza si vienen pregunta Y
+    // respuesta juntas; si no, queda exactamente como estaba.
     @Transactional
     public UserResponse updateProfile(User currentUser, UpdateProfileRequest request) {
         boolean usernameChanged = !currentUser.getUsername().equalsIgnoreCase(request.username());
@@ -81,9 +87,53 @@ public class AuthService {
         currentUser.setUsername(request.username());
         currentUser.setDisplayName(request.displayName());
         currentUser.setAvatarIcon(request.avatarIcon());
-        User saved = userRepository.save(currentUser);
 
+        if (request.securityQuestion() != null && !request.securityQuestion().isBlank()
+                && request.securityAnswer() != null && !request.securityAnswer().isBlank()) {
+            currentUser.setSecurityQuestion(request.securityQuestion().trim());
+            currentUser.setSecurityAnswerHash(passwordEncoder.encode(normalizeAnswer(request.securityAnswer())));
+        }
+
+        User saved = userRepository.save(currentUser);
         return toUserResponse(saved);
+    }
+
+    // --- Recuperar contraseña sin mail, via pregunta de seguridad ---
+
+    @Transactional(readOnly = true)
+    public SecurityQuestionResponse getSecurityQuestion(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new BadRequestException("No encontramos ninguna cuenta con ese usuario"));
+
+        if (user.getSecurityQuestion() == null || user.getSecurityAnswerHash() == null) {
+            throw new ConflictException("Esta cuenta todavia no tiene una pregunta de seguridad configurada");
+        }
+
+        return new SecurityQuestionResponse(user.getSecurityQuestion());
+    }
+
+    @Transactional
+    public void resetPassword(ResetPasswordRequest request) {
+        User user = userRepository.findByUsername(request.username())
+                .orElseThrow(() -> new BadRequestException("Usuario o respuesta incorrectos"));
+
+        if (user.getSecurityAnswerHash() == null
+                || !passwordEncoder.matches(normalizeAnswer(request.securityAnswer()), user.getSecurityAnswerHash())) {
+            throw new BadRequestException("Usuario o respuesta incorrectos");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+
+        // Por las dudas, cerramos cualquier sesion vieja que haya quedado
+        // abierta en otro dispositivo despues de este reset.
+        authTokenRepository.deleteByUser(user);
+    }
+
+    // La respuesta no distingue mayusculas/minusculas ni espacios de mas,
+    // asi "Rex" y "rex " valen lo mismo -- menos friccion para el usuario.
+    private String normalizeAnswer(String answer) {
+        return answer.trim().toLowerCase();
     }
 
     private AuthResponse buildAuthResponse(User user) {
@@ -103,7 +153,8 @@ public class AuthService {
                 user.getUsername(),
                 user.getDisplayNameOrUsername(),
                 user.getAvatarIcon(),
-                user.getEmail()
+                user.getEmail(),
+                user.getSecurityQuestion()
         );
     }
 }

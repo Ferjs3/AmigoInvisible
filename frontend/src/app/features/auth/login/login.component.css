@@ -1,3 +1,7 @@
-/* Este componente no tiene estilos propios: usa por completo
-   las clases compartidas de src/styles.css (.page, .panel, .title,
-   .form-*, .btn--primary, etc.) */
+/* Este componente usa casi todo de src/styles.css (.page, .panel, .title,
+   .form-*, .btn--primary, etc.) -- esto es lo unico propio. */
+.forgot-link {
+  display: block;
+  text-align: right;
+  margin-top: -6px;
+}

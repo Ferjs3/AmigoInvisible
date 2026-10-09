@@ -44,6 +44,16 @@ public class User {
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
+    // Recuperacion de contraseña sin mail: el admin de la cuenta responde
+    // esta pregunta para demostrar que es quien dice ser. La pregunta se
+    // guarda tal cual (no es secreta); la respuesta se guarda hasheada con
+    // BCrypt, igual que la contraseña -- nunca en texto plano.
+    @Column(name = "security_question", length = 200)
+    private String securityQuestion;
+
+    @Column(name = "security_answer_hash", length = 255)
+    private String securityAnswerHash;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 

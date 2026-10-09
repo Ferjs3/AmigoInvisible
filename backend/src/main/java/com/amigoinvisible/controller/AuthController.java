@@ -30,7 +30,7 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<UserResponse> me() {
         var user = currentUser.get();
-        return ResponseEntity.ok(new UserResponse(user.getId(), user.getUsername(), user.getDisplayNameOrUsername(), user.getAvatarIcon(), user.getEmail()));
+        return ResponseEntity.ok(new UserResponse(user.getId(), user.getUsername(), user.getDisplayNameOrUsername(), user.getAvatarIcon(), user.getEmail(), user.getSecurityQuestion()));
     }
 
     @PatchMapping("/me")
@@ -42,6 +42,19 @@ public class AuthController {
     public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authorizationHeader) {
         String rawToken = authorizationHeader.replace("Bearer ", "").trim();
         authService.logout(rawToken);
+        return ResponseEntity.noContent().build();
+    }
+
+    // --- Recuperar contraseña sin mail: publico, no requiere estar logueado ---
+
+    @GetMapping("/recovery/question")
+    public ResponseEntity<SecurityQuestionResponse> getSecurityQuestion(@RequestParam String username) {
+        return ResponseEntity.ok(authService.getSecurityQuestion(username));
+    }
+
+    @PostMapping("/recovery/reset")
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        authService.resetPassword(request);
         return ResponseEntity.noContent().build();
     }
 }

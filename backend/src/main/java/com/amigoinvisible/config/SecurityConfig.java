@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/recovery/**").permitAll() // recuperar contraseña: no hay sesion todavia
                         .requestMatchers("/api/rooms/*/preview").permitAll() // GET /api/rooms/{code} para previsualizar
                         .anyRequest().authenticated()
                 )

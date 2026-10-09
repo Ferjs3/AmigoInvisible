@@ -20,9 +20,23 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  register(username: string, displayName: string, email: string, password: string): Observable<AuthResponse> {
+  register(
+    username: string,
+    displayName: string,
+    email: string,
+    password: string,
+    securityQuestion: string,
+    securityAnswer: string
+  ): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponse>(`${this.baseUrl}/register`, { username, displayName, email, password })
+      .post<AuthResponse>(`${this.baseUrl}/register`, {
+        username,
+        displayName,
+        email,
+        password,
+        securityQuestion,
+        securityAnswer,
+      })
       .pipe(tap((res) => this.storeSession(res)));
   }
 
@@ -32,13 +46,33 @@ export class AuthService {
       .pipe(tap((res) => this.storeSession(res)));
   }
 
-  updateProfile(username: string, displayName: string, avatarIcon: string | null): Observable<UserResponse> {
-    return this.http.patch<UserResponse>(`${this.baseUrl}/me`, { username, displayName, avatarIcon }).pipe(
-      tap((user) => {
-        localStorage.setItem(USER_KEY, JSON.stringify(user));
-        this.currentUserSignal.set(user);
-      })
-    );
+  updateProfile(
+    username: string,
+    displayName: string,
+    avatarIcon: string | null,
+    securityQuestion: string | null,
+    securityAnswer: string | null
+  ): Observable<UserResponse> {
+    return this.http
+      .patch<UserResponse>(`${this.baseUrl}/me`, { username, displayName, avatarIcon, securityQuestion, securityAnswer })
+      .pipe(
+        tap((user) => {
+          localStorage.setItem(USER_KEY, JSON.stringify(user));
+          this.currentUserSignal.set(user);
+        })
+      );
+  }
+
+  // --- Recuperar contraseña sin mail ---
+
+  getSecurityQuestion(username: string): Observable<{ securityQuestion: string }> {
+    return this.http.get<{ securityQuestion: string }>(`${this.baseUrl}/recovery/question`, {
+      params: { username },
+    });
+  }
+
+  resetPassword(username: string, securityAnswer: string, newPassword: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/recovery/reset`, { username, securityAnswer, newPassword });
   }
 
   // Invalida el token del lado del servidor (asi no queda "vivo" en la base
