@@ -11,6 +11,14 @@
       </div>
     } @else {
       <form (ngSubmit)="submit()" class="form-stack">
+      <label class="form-field">
+        <span class="form-label">¿Cómo hicieron el sorteo?</span>
+        <select class="form-select" [(ngModel)]="mode" name="mode">
+          <option value="AUTO">Sortear en la app</option>
+          <option value="PAPER">Ya sorteamos en papel</option>
+        </select>
+      </label>
+
         <label class="form-field">
           <span class="form-label">Ícono de la sala</span>
           <div class="icon-picker">

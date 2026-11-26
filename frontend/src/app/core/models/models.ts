@@ -4,13 +4,14 @@ export interface UserResponse {
   displayName: string;
   avatarIcon: string | null;
   email: string;
-  securityQuestion: string | null;
 }
 
 export interface AuthResponse {
   token: string;
   user: UserResponse;
 }
+
+export type RoomMode = 'AUTO' | 'PAPER';
 
 export type RoomStatus = 'OPEN' | 'SEALED' | 'DISCARDED';
 export type ParticipantStatus = 'PENDING' | 'READY';
@@ -45,6 +46,9 @@ export interface ParticipantResponse {
 }
 
 export interface RoomDetail {
+  mode: RoomMode;
+  hasMyAssignment: boolean;
+  paperConflict: boolean;
   id: number;
   name: string;
   icon: string | null;
@@ -59,7 +63,7 @@ export interface RoomDetail {
 }
 
 export interface ExclusionResponse {
-  id: number;
+  id: string;
   giverId: number;
   giverDisplayName: string;
   receiverId: number;

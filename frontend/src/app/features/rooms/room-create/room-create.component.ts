@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { RoomService } from '../../../core/services/room.service';
+import { RoomMode } from '../../../core/models/models';
 import { ROOM_ICON_OPTIONS } from '../../../core/constants/room-icons';
 
 @Component({
@@ -16,6 +17,7 @@ export class RoomCreateComponent {
   iconOptions = ROOM_ICON_OPTIONS;
 
   name = '';
+  mode: RoomMode = 'AUTO';
   icon: string = this.iconOptions[0];
   suggestedBudget: number | null = null;
   eventDate = '';
@@ -38,6 +40,7 @@ export class RoomCreateComponent {
     this.roomService
       .create({
         name: this.name,
+        mode: this.mode,
         icon: this.icon,
         suggestedBudget: this.suggestedBudget,
         eventDate: this.eventDate || null,

@@ -63,12 +63,16 @@
 
       <!-- Body -->
       <div class="lobby-body">
+        @if (room()!.paperConflict) {
+          <p class="field-error">Hay un destinatario cargado más de una vez. Cada participante puede revisar su papel y corregir su resultado.</p>
+        }
         @switch (tab()) {
           @case ('resumen') {
             <app-participants-list
               [participants]="room()!.participants"
               [isAdmin]="room()!.isAdmin"
               [roomOpen]="room()!.status === 'OPEN'"
+              [paper]="room()!.mode === 'PAPER'"
               (draw)="confirmAction.set('draw')"
               (toggleReady)="onToggleReady($event)"
               (removeParticipant)="onRemoveParticipant($event)"
@@ -81,7 +85,7 @@
                 [roomOpen]="room()!.status === 'OPEN'"
               />
             </div>
-            @if (room()!.isAdmin && room()!.status === 'OPEN') {
+            @if (room()!.isAdmin && room()!.status === 'OPEN' && room()!.mode === 'AUTO') {
               <div class="lobby-section-divider">
                 <app-exclusions-manager [roomId]="room()!.id" [participants]="room()!.participants" />
               </div>
@@ -89,7 +93,32 @@
           }
           @case ('amigo') {
             @if (room()!.status === 'SEALED') {
-              <app-secret-friend-card [roomId]="room()!.id" />
+              @if (room()!.mode === 'PAPER' && (!room()!.hasMyAssignment || editingPaper())) {
+                <form class="form-stack" (ngSubmit)="savePaper()">
+                  <label class="form-field">
+                    <span class="form-label">¿Quién te tocó en el papel?</span>
+                    <select class="form-select" [(ngModel)]="paperRecipient" name="paperRecipient" required>
+                      <option [ngValue]="null">Elegí un participante</option>
+                      @for (participant of room()!.participants; track participant.userId) {
+                        @if (!participant.isMe) {
+                          <option [ngValue]="participant.userId">{{ participant.displayName }}</option>
+                        }
+                      }
+                    </select>
+                  </label>
+                  <button type="submit" class="btn btn--primary" [disabled]="paperRecipient === null || savingPaper()">
+                    {{ savingPaper() ? 'Guardando…' : 'Guardar mi resultado' }}
+                  </button>
+                  @if (editingPaper()) {
+                    <button type="button" class="link link--muted" (click)="editingPaper.set(false)">Cancelar</button>
+                  }
+                </form>
+              } @else {
+                <app-secret-friend-card [roomId]="room()!.id" />
+                @if (room()!.mode === 'PAPER') {
+                  <button type="button" class="link link--muted" (click)="editingPaper.set(true)">Corregir mi resultado</button>
+                }
+              }
             } @else {
               <p class="hint-text hint-text--italic">Todavía no se hizo el sorteo en esta sala.</p>
             }
@@ -98,7 +127,11 @@
             <app-wishlist-board [roomId]="room()!.id" [participants]="room()!.participants" />
           }
           @case ('preguntas') {
-            <app-questions-wall [roomId]="room()!.id" [roomSealed]="room()!.status === 'SEALED'" />
+            @if (room()!.mode === 'PAPER' && !room()!.hasMyAssignment) {
+              <p class="hint-text">Cargá tu resultado en «Mi amigo invisible» para hacer preguntas.</p>
+            }
+            <app-questions-wall [roomId]="room()!.id"
+              [roomSealed]="room()!.status === 'SEALED' && (room()!.mode === 'AUTO' || room()!.hasMyAssignment)" />
           }
         }
       </div>
@@ -110,10 +143,10 @@
     <div class="modal-overlay">
       <div class="panel modal-card">
         @if (confirmAction() === 'draw') {
-          <h2 class="section-heading">¿Iniciar el sorteo?</h2>
+          <h2 class="section-heading">{{ room()!.mode === 'PAPER' ? '¿Habilitar la carga en papel?' : '¿Iniciar el sorteo?' }}</h2>
           <p class="hint-text hint-text--lg modal-text">
-            Esta acción es <strong>definitiva</strong>. Una vez que sortees, la lista de
-            participantes queda bloqueada: nadie va a poder sumarse, salir ni ser eliminado.
+            Al confirmar, la lista de participantes queda bloqueada.
+            @if (room()!.mode === 'PAPER') { Cada persona podrá cargar su propio resultado. }
           </p>
         } @else {
           <h2 class="section-heading">¿Eliminar esta sala?</h2>
@@ -125,7 +158,7 @@
         <div class="modal-actions">
           <button (click)="confirmAction.set(null)" class="btn btn--outline">Cancelar</button>
           <button (click)="confirmAction() === 'draw' ? onDraw() : onDeleteRoom()" class="btn btn--danger">
-            {{ confirmAction() === 'draw' ? 'Sí, sortear' : 'Sí, eliminar' }}
+            {{ confirmAction() === 'draw' ? (room()!.mode === 'PAPER' ? 'Sí, habilitar' : 'Sí, sortear') : 'Sí, eliminar' }}
           </button>
         </div>
       </div>

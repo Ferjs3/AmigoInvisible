@@ -28,7 +28,8 @@
             [(ngModel)]="password"
             name="password"
             required
-            minlength="6"
+            minlength="8"
+            autocomplete="new-password"
           />
           <button
             type="button"
@@ -39,28 +40,6 @@
             {{ showPassword() ? '🙈' : '👁' }}
           </button>
         </div>
-      </label>
-
-      <label class="form-field">
-        <span class="form-label">Pregunta de seguridad (para recuperar tu cuenta sin mail)</span>
-        <select class="form-select" [(ngModel)]="selectedQuestion" name="selectedQuestion">
-          @for (q of questionOptions; track q) {
-            <option [value]="q">{{ q }}</option>
-          }
-        </select>
-      </label>
-
-      @if (isCustomQuestion) {
-        <label class="form-field">
-          <span class="form-label">Escribí tu pregunta</span>
-          <input class="form-input" type="text" [(ngModel)]="customQuestion" name="customQuestion" required />
-        </label>
-      }
-
-      <label class="form-field">
-        <span class="form-label">Tu respuesta</span>
-        <input class="form-input" type="text" [(ngModel)]="securityAnswer" name="securityAnswer" required />
-        <span class="hint-text">Vas a necesitarla si alguna vez te olvidás la contraseña. Elegí algo que te acuerdes fácil.</span>
       </label>
 
       @if (error()) {

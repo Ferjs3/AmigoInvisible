@@ -14,6 +14,7 @@ export class ParticipantsListComponent {
   @Input({ required: true }) participants: ParticipantResponse[] = [];
   @Input() isAdmin = false;
   @Input() roomOpen = true;
+  @Input() paper = false;
 
   @Output() draw = new EventEmitter<void>();
   @Output() toggleReady = new EventEmitter<boolean>();
@@ -25,6 +26,6 @@ export class ParticipantsListComponent {
   }
 
   canDraw(): boolean {
-    return this.participants.length >= 3 && this.participants.every((p) => p.status === 'READY');
+    return this.participants.length >= (this.paper ? 2 : 3) && this.participants.every((p) => p.status === 'READY');
   }
 }

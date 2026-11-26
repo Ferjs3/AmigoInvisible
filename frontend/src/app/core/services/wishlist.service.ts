@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { WishlistItem } from '../models/models';
 
 export interface WishlistItemPayload {
@@ -12,25 +11,21 @@ export interface WishlistItemPayload {
 
 @Injectable({ providedIn: 'root' })
 export class WishlistService {
-  constructor(private http: HttpClient) {}
-
-  private base(roomId: number): string {
-    return `${environment.apiUrl}/rooms/${roomId}/wishlist`;
-  }
+  constructor(private auth: AuthService) {}
 
   getWishlist(roomId: number, userId: number): Observable<WishlistItem[]> {
-    return this.http.get<WishlistItem[]>(`${this.base(roomId)}/${userId}`);
+    return this.auth.request<WishlistItem[]>('wishList', { roomId, userId }, true);
   }
 
   addItem(roomId: number, payload: WishlistItemPayload): Observable<WishlistItem> {
-    return this.http.post<WishlistItem>(this.base(roomId), payload);
+    return this.auth.request<WishlistItem>('wishAdd', { ...payload, roomId }, true);
   }
 
   updateItem(roomId: number, itemId: number, payload: WishlistItemPayload): Observable<WishlistItem> {
-    return this.http.put<WishlistItem>(`${this.base(roomId)}/${itemId}`, payload);
+    return this.auth.request<WishlistItem>('wishUpdate', { ...payload, roomId, itemId }, true);
   }
 
   deleteItem(roomId: number, itemId: number): Observable<void> {
-    return this.http.delete<void>(`${this.base(roomId)}/${itemId}`);
+    return this.auth.request<void>('wishDelete', { roomId, itemId }, true);
   }
 }

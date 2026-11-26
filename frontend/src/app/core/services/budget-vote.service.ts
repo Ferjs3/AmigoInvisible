@@ -1,30 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { BudgetVoteStatus } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetVoteService {
-  constructor(private http: HttpClient) {}
-
-  private base(roomId: number): string {
-    return `${environment.apiUrl}/rooms/${roomId}/budget-vote`;
-  }
+  constructor(private auth: AuthService) {}
 
   getStatus(roomId: number): Observable<BudgetVoteStatus> {
-    return this.http.get<BudgetVoteStatus>(this.base(roomId));
+    return this.auth.request<BudgetVoteStatus>('voteStatus', { roomId }, true);
   }
 
   open(roomId: number): Observable<BudgetVoteStatus> {
-    return this.http.post<BudgetVoteStatus>(`${this.base(roomId)}/open`, {});
+    return this.auth.request<BudgetVoteStatus>('voteOpen', { roomId }, true);
   }
 
   castVote(roomId: number, amount: number): Observable<BudgetVoteStatus> {
-    return this.http.post<BudgetVoteStatus>(this.base(roomId), { amount });
+    return this.auth.request<BudgetVoteStatus>('voteCast', { roomId, amount }, true);
   }
 
   resolveTie(roomId: number, amount: number): Observable<BudgetVoteStatus> {
-    return this.http.post<BudgetVoteStatus>(`${this.base(roomId)}/resolve-tie`, { amount });
+    return this.auth.request<BudgetVoteStatus>('voteResolve', { roomId, amount }, true);
   }
 }

@@ -37,13 +37,13 @@
   <button (click)="leave.emit()" class="link link--danger leave-link">Salir de la sala</button>
 }
 
-@if (isAdmin) {
+@if (isAdmin && roomOpen) {
   <div class="draw-box">
     <p class="hint-text draw-hint">
-      El sorteo se habilita con al menos 3 participantes y todos en estado listo.
+      {{ paper ? 'Para habilitar la carga, confirmá que estén todos los que participaron en papel.' : 'El sorteo se habilita con al menos 3 participantes y todos en estado listo.' }}
     </p>
     <button (click)="draw.emit()" [disabled]="!canDraw()" class="btn btn--primary btn--block draw-button">
-      {{ canDraw() ? 'Iniciar sorteo' : 'Esperando a todos' }}
+      {{ canDraw() ? (paper ? 'Habilitar carga en papel' : 'Iniciar sorteo') : 'Esperando a todos' }}
     </button>
   </div>
 }

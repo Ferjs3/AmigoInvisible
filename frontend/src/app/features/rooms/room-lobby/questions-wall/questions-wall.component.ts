@@ -69,7 +69,7 @@ export class QuestionsWallComponent implements OnInit {
   answer(questionId: number): void {
     const draft = this.replyDrafts[questionId];
     if (!draft?.trim()) return;
-    this.questionService.answer(questionId, draft.trim()).subscribe(() => {
+    this.questionService.answer(this.roomId, questionId, draft.trim()).subscribe(() => {
       delete this.replyDrafts[questionId];
       this.loadReceived();
     });

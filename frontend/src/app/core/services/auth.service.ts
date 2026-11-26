@@ -1,16 +1,16 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthResponse, UserResponse } from '../models/models';
 
-const TOKEN_KEY = 'amigo_invisible_token';
-const USER_KEY = 'amigo_invisible_user';
+const TOKEN_KEY = 'amigo_invisible_sheets_token';
+const USER_KEY = 'amigo_invisible_sheets_user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly baseUrl = `${environment.apiUrl}/auth`;
+  private readonly http: HttpClient;
 
   private readonly currentUserSignal = signal<UserResponse | null>(this.readStoredUser());
   private readonly tokenSignal = signal<string | null>(localStorage.getItem(TOKEN_KEY));
@@ -18,61 +18,49 @@ export class AuthService {
   readonly currentUser = computed(() => this.currentUserSignal());
   readonly isAuthenticated = computed(() => this.tokenSignal() !== null);
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(backend: HttpBackend, private router: Router) {
+    this.http = new HttpClient(backend);
+  }
 
-  register(
-    username: string,
-    displayName: string,
-    email: string,
-    password: string,
-    securityQuestion: string,
-    securityAnswer: string
-  ): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.baseUrl}/register`, {
-        username,
-        displayName,
-        email,
-        password,
-        securityQuestion,
-        securityAnswer,
-      })
-      .pipe(tap((res) => this.storeSession(res)));
+  register(username: string, displayName: string, email: string, password: string): Observable<AuthResponse> {
+    return this.request<AuthResponse>('register', { username, displayName, email, password })
+      .pipe(tap((response) => this.storeSession(response)));
   }
 
   login(username: string, password: string): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.baseUrl}/login`, { username, password })
-      .pipe(tap((res) => this.storeSession(res)));
+    return this.request<AuthResponse>('login', { username, password })
+      .pipe(tap((response) => this.storeSession(response)));
   }
 
-  updateProfile(
-    username: string,
-    displayName: string,
-    avatarIcon: string | null,
-    securityQuestion: string | null,
-    securityAnswer: string | null
-  ): Observable<UserResponse> {
-    return this.http
-      .patch<UserResponse>(`${this.baseUrl}/me`, { username, displayName, avatarIcon, securityQuestion, securityAnswer })
-      .pipe(
-        tap((user) => {
-          localStorage.setItem(USER_KEY, JSON.stringify(user));
-          this.currentUserSignal.set(user);
-        })
-      );
+  updateProfile(username: string, displayName: string, avatarIcon: string | null): Observable<UserResponse> {
+    return this.request<UserResponse>('profile', { username, displayName, avatarIcon }, true).pipe(
+      tap((user) => {
+        localStorage.setItem(USER_KEY, JSON.stringify(user));
+        this.currentUserSignal.set(user);
+      })
+    );
   }
 
-  // --- Recuperar contraseña sin mail ---
-
-  getSecurityQuestion(username: string): Observable<{ securityQuestion: string }> {
-    return this.http.get<{ securityQuestion: string }>(`${this.baseUrl}/recovery/question`, {
-      params: { username },
-    });
+  verifyRecovery(username: string, code: string): Observable<void> {
+    return this.request<void>('verifyRecovery', { username, code });
   }
 
-  resetPassword(username: string, securityAnswer: string, newPassword: string): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/recovery/reset`, { username, securityAnswer, newPassword });
+  resetPassword(username: string, code: string, newPassword: string): Observable<void> {
+    return this.request<void>('resetPassword', { username, code, newPassword });
+  }
+
+  request<T>(action: string, payload: object = {}, authenticated = false): Observable<T> {
+    const body = JSON.stringify({ ...payload, action, token: authenticated ? this.getToken() : undefined });
+    return this.http.post<{ ok: true; data: T } | { ok: false; status: number; message: string }>(
+      environment.sheetsUrl, body, { headers: { 'Content-Type': 'text/plain;charset=UTF-8' } }
+    ).pipe(map((response) => {
+      if (response.ok && 'data' in response) return response.data;
+      if (response.ok) {
+        throw new HttpErrorResponse({ status: 503, error: { message: 'Actualizá la implementación de Apps Script.' } });
+      }
+      if (response.status === 401 && authenticated) this.forceLocalLogout();
+      throw new HttpErrorResponse({ status: response.status, error: { message: response.message } });
+    }));
   }
 
   // Invalida el token del lado del servidor (asi no queda "vivo" en la base
@@ -90,7 +78,7 @@ export class AuthService {
       return;
     }
 
-    this.http.delete(`${this.baseUrl}/logout`).subscribe({
+    this.request<void>('logout', {}, true).subscribe({
       next: finish,
       error: finish, // si el backend no responde, igual cerramos sesion localmente
     });

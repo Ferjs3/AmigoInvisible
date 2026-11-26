@@ -38,7 +38,7 @@ export class ExclusionsManagerComponent implements OnInit {
     });
   }
 
-  remove(exclusionId: number): void {
+  remove(exclusionId: string): void {
     this.roomService.removeExclusion(this.roomId, exclusionId).subscribe(() => this.load());
   }
 }

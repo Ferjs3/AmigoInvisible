@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Subscription, interval, switchMap } from 'rxjs';
+import { EMPTY, Subscription, catchError, interval, switchMap } from 'rxjs';
 import { RoomService } from '../../../core/services/room.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { RoomDetail } from '../../../core/models/models';
@@ -17,7 +17,7 @@ import { ROOM_ICON_OPTIONS } from '../../../core/constants/room-icons';
 type Tab = 'resumen' | 'amigo' | 'tablon' | 'preguntas';
 type ConfirmAction = 'draw' | 'delete' | null;
 
-const POLL_INTERVAL_MS = 6000;
+const POLL_INTERVAL_MS = 30000;
 
 @Component({
   selector: 'app-room-lobby',
@@ -43,6 +43,9 @@ export class RoomLobbyComponent implements OnInit, OnDestroy {
   copied = signal(false);
   confirmAction = signal<ConfirmAction>(null);
   sharing = signal(false);
+  paperRecipient: number | null = null;
+  editingPaper = signal(false);
+  savingPaper = signal(false);
 
   // edicion de la sala
   iconOptions = ROOM_ICON_OPTIONS;
@@ -90,10 +93,9 @@ export class RoomLobbyComponent implements OnInit, OnDestroy {
 
   private startPolling(): void {
     this.pollSub = interval(POLL_INTERVAL_MS)
-      .pipe(switchMap(() => this.roomService.getDetail(this.roomId)))
+      .pipe(switchMap(() => this.roomService.getDetail(this.roomId).pipe(catchError(() => EMPTY))))
       .subscribe({
         next: (room) => this.room.set(room),
-        error: () => {},
       });
   }
 
@@ -184,6 +186,25 @@ export class RoomLobbyComponent implements OnInit, OnDestroy {
           this.editError.set(err.error?.message ?? 'No se pudo guardar los cambios');
         },
       });
+  }
+
+  savePaper(): void {
+    const room = this.room();
+    if (!room || this.paperRecipient === null || this.savingPaper()) return;
+    this.savingPaper.set(true);
+    this.error.set(null);
+    this.roomService.savePaper(room.id, this.paperRecipient).subscribe({
+      next: (updated) => {
+        this.room.set(updated);
+        this.savingPaper.set(false);
+        this.editingPaper.set(false);
+        this.paperRecipient = null;
+      },
+      error: (err) => {
+        this.savingPaper.set(false);
+        this.error.set(err.error?.message ?? 'No se pudo guardar tu resultado');
+      },
+    });
   }
 
   onDraw(): void {
