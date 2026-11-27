@@ -83,6 +83,10 @@ export class RoomService {
   myAssignment(roomId: number): Observable<MyAssignment> {
     return this.auth.request<MyAssignment>('myAssignment', { roomId }, true);
   }
+  mailMyAssignment(roomId: number): Observable<void> {
+    return this.auth.request<void>('mailMyAssignment', { roomId }, true);
+  }
+
   savePaper(roomId: number, receiverId: number): Observable<RoomDetail> {
     return this.auth.request<RoomDetail>('savePaper', { roomId, receiverId }, true);
   }

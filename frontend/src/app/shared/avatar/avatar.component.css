@@ -6,8 +6,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--primary);
-  color: var(--surface);
+  background: var(--avatar-color, var(--primary));
+  color: #1f242b;
   font-size: 12px;
   font-weight: 600;
 }

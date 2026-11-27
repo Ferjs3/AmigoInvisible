@@ -1,20 +1,13 @@
-<div class="page">
+<div class="page page--bottom-nav">
   <div class="panel panel--wide">
-    <p class="eyebrow">Amigo invisible</p>
     <div class="header-row">
       <div class="greeting">
         <app-avatar [name]="authService.currentUser()?.displayName ?? '?'" [icon]="authService.currentUser()?.avatarIcon ?? null" size="lg" />
         <h1 class="title title--tight">Hola, {{ authService.currentUser()?.displayName }}</h1>
       </div>
       <div class="header-links">
-        <a routerLink="/profile" class="link link--muted">Mi perfil</a>
         <button (click)="authService.logout()" class="link link--muted">Cerrar sesión</button>
       </div>
-    </div>
-
-    <div class="actions-row">
-      <a routerLink="/rooms/new" class="btn btn--primary action-btn">+ Crear sala</a>
-      <a routerLink="/rooms/join" class="btn btn--outline action-btn">Unirme con código</a>
     </div>
 
     <h2 class="section-heading">Tus salas</h2>
@@ -46,4 +39,18 @@
       </div>
     }
   </div>
+  <nav class="bottom-nav" aria-label="Navegación principal">
+    <a routerLink="/rooms" class="bottom-nav-item" aria-current="page">
+      <span class="bottom-nav-icon" aria-hidden="true">⌂</span> Inicio
+    </a>
+    <a routerLink="/rooms/join" class="bottom-nav-item">
+      <span class="bottom-nav-icon" aria-hidden="true">↪</span> Unirme
+    </a>
+    <a routerLink="/rooms/new" class="bottom-nav-item bottom-nav-item--create">
+      <span class="bottom-nav-icon" aria-hidden="true">+</span> Crear sala
+    </a>
+    <a routerLink="/profile" class="bottom-nav-item">
+      <span class="bottom-nav-icon" aria-hidden="true">◎</span> Mi perfil
+    </a>
+  </nav>
 </div>

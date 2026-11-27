@@ -32,8 +32,8 @@ export class AuthService {
       .pipe(tap((response) => this.storeSession(response)));
   }
 
-  updateProfile(username: string, displayName: string, avatarIcon: string | null): Observable<UserResponse> {
-    return this.request<UserResponse>('profile', { username, displayName, avatarIcon }, true).pipe(
+  updateProfile(username: string, displayName: string, email: string, avatarIcon: string | null): Observable<UserResponse> {
+    return this.request<UserResponse>('profile', { username, displayName, email, avatarIcon }, true).pipe(
       tap((user) => {
         localStorage.setItem(USER_KEY, JSON.stringify(user));
         this.currentUserSignal.set(user);
