@@ -16,6 +16,9 @@ export class SecretFriendCardComponent implements OnInit {
   loading = signal(true);
   error = signal<string | null>(null);
   name = signal<string>('');
+  mailing = signal(false);
+  mailSent = signal(false);
+  mailError = signal<string | null>(null);
 
   constructor(private roomService: RoomService) {}
 
@@ -28,6 +31,23 @@ export class SecretFriendCardComponent implements OnInit {
       error: (err) => {
         this.error.set(err.error?.message ?? 'Todavía no se hizo el sorteo');
         this.loading.set(false);
+      },
+    });
+  }
+
+  sendMail(): void {
+    if (this.mailing()) return;
+    this.mailing.set(true);
+    this.mailSent.set(false);
+    this.mailError.set(null);
+    this.roomService.mailMyAssignment(this.roomId).subscribe({
+      next: () => {
+        this.mailing.set(false);
+        this.mailSent.set(true);
+      },
+      error: (err) => {
+        this.mailing.set(false);
+        this.mailError.set(err.error?.message ?? 'No se pudo enviar el correo.');
       },
     });
   }

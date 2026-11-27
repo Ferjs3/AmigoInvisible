@@ -11,7 +11,7 @@
 .ticket-header {
   background: var(--surface);
   border-radius: 16px 16px 0 0;
-  padding: 24px 28px 20px;
+  padding: 16px clamp(14px, 5vw, 28px);
   border-bottom: 2px dashed color-mix(in srgb, var(--fg) 20%, transparent);
 }
 
@@ -26,22 +26,21 @@
   gap: 12px;
 }
 
-.ticket-eyebrow {
-  margin: 8px 0 0;
-}
-
 .ticket-title-row {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-top: 4px;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .ticket-title {
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .code-chip {
@@ -59,7 +58,7 @@
 }
 
 .code-chip-status {
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: normal;
   opacity: 0.85;
 }
@@ -69,7 +68,7 @@
   flex-wrap: wrap;
   gap: 8px 20px;
   margin-top: 14px;
-  font-size: 12px;
+  font-size: 15px;
   color: var(--fg-muted);
 }
 
@@ -82,33 +81,6 @@
   margin-top: 14px;
 }
 
-/* --- tabs --- */
-.tabs-row {
-  background: var(--surface);
-  display: flex;
-  padding: 0 20px;
-  border-bottom: 1px solid color-mix(in srgb, var(--fg) 10%, transparent);
-}
-
-.tab-button {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 10px;
-  font-size: 14px;
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  color: var(--fg-muted);
-  cursor: pointer;
-}
-
-.tab-button--active {
-  color: var(--primary-dark);
-  font-weight: 600;
-  border-bottom-color: var(--primary);
-}
-
 /* --- body --- */
 .lobby-error-bar {
   background: var(--surface);
@@ -118,7 +90,7 @@
 .lobby-body {
   background: var(--surface);
   border-radius: 0 0 16px 16px;
-  padding: 20px 28px 28px;
+  padding: 20px clamp(14px, 5vw, 28px) 28px;
   min-height: 320px;
 }
 
@@ -144,4 +116,14 @@
 
 .modal-actions .btn {
   flex: 1;
+}
+
+.room-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.room-notes {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }

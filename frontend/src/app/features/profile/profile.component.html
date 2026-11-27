@@ -1,55 +1,85 @@
-<div class="page">
-  <div class="panel">
-    <a routerLink="/rooms" class="back-link">&larr; Volver</a>
-    <h1 class="title profile-title">Mi perfil</h1>
-    <p class="subtitle">Así te ven los demás en tus salas.</p>
+<div class="page page--bottom-nav">
+  <div class="panel profile-panel">
+    <header class="profile-heading">
+      <app-avatar [name]="displayName || '?'" [icon]="avatarPreview(avatarIcon)" size="lg" />
+      <h1 class="title">Mi perfil</h1>
+    </header>
 
-    <form (ngSubmit)="submit()" class="form-stack">
-      <label class="form-field">
-        <span class="form-label">Tu ícono</span>
-        <div class="avatar-preview-row">
-          <app-avatar [name]="displayName || '?'" [icon]="avatarIcon" size="lg" />
-          <div class="icon-picker">
-            @for (opt of iconOptions; track opt.key) {
-              <button
-                type="button"
-                (click)="selectIcon(opt.key)"
-                class="icon-option avatar-icon-option"
-                [class.icon-option--selected]="avatarIcon === opt.key"
-                [title]="opt.label"
-              >
-                <app-avatar name="?" [icon]="opt.key" size="sm" />
-              </button>
-            }
-          </div>
+    <form #profileForm="ngForm" (ngSubmit)="submit()" class="form-stack">
+      <fieldset class="avatar-options">
+        <legend class="form-label">Avatar</legend>
+        <div class="profile-icons">
+          <button type="button" class="icon-option avatar-icon-option"
+            [class.icon-option--selected]="avatarIcon === null"
+            [attr.aria-pressed]="avatarIcon === null"
+            (click)="avatarIcon = null" aria-label="Usar iniciales" title="Iniciales">
+            <app-avatar [name]="displayName || '?'" [icon]="avatarPreview(null)" />
+          </button>
+          @for (opt of iconOptions; track opt.key) {
+            <button type="button" class="icon-option avatar-icon-option"
+              [class.icon-option--selected]="avatarIcon === opt.key"
+              [attr.aria-pressed]="avatarIcon === opt.key"
+              [attr.aria-label]="opt.label" [title]="opt.label" (click)="avatarIcon = opt.key">
+              <app-avatar name="?" [icon]="avatarPreview(opt.key)" />
+            </button>
+          }
         </div>
-        <p class="hint-text">Tocá uno para elegirlo, o tocalo de nuevo para volver a tus iniciales.</p>
+      </fieldset>
+
+      <fieldset class="avatar-options">
+        <legend class="form-label">Color del avatar</legend>
+        <div class="avatar-colors">
+          @for (option of colorOptions; track option.key) {
+            <button type="button" class="avatar-swatch" [style.--swatch]="option.color"
+              [attr.aria-pressed]="avatarColor === option.key"
+              [attr.aria-label]="option.label" [title]="option.label" (click)="avatarColor = option.key">
+            </button>
+          }
+        </div>
+      </fieldset>
+
+      <label class="form-field">
+        <span class="form-label">Nombre visible</span>
+        <input class="form-input" type="text" [(ngModel)]="displayName" name="displayName" required maxlength="80" />
       </label>
 
       <label class="form-field">
-        <span class="form-label">Nombre (como te ven los demás)</span>
-        <input class="form-input" type="text" [(ngModel)]="displayName" name="displayName" required />
+        <span class="form-label">Usuario</span>
+        <input class="form-input" type="text" [(ngModel)]="username" name="username" autocomplete="username" required />
       </label>
 
       <label class="form-field">
-        <span class="form-label">Usuario (para iniciar sesión)</span>
-        <input class="form-input" type="text" [(ngModel)]="username" name="username" required />
+        <span class="form-label">Correo</span>
+        <input class="form-input" type="email" [(ngModel)]="email" name="email" autocomplete="email"
+          required email maxlength="254" />
       </label>
-
-      <p class="hint-text hint-text--italic">
-        El email ({{ authService.currentUser()?.email }}) no se puede editar por acá todavía.
-      </p>
 
       @if (error()) {
-        <p class="field-error">{{ error() }}</p>
+        <p class="field-error" role="alert">{{ error() }}</p>
       }
       @if (saved()) {
-        <p class="hint-text saved-msg">Guardado ✓</p>
+        <p class="saved-msg" role="status">Cambios guardados</p>
       }
 
-      <button type="submit" [disabled]="loading()" class="btn btn--primary">
+      <button type="submit" [disabled]="loading() || profileForm.invalid" class="btn btn--primary">
         {{ loading() ? 'Guardando…' : 'Guardar cambios' }}
       </button>
     </form>
+    <app-install-button class="profile-install" />
   </div>
+
+  <nav class="bottom-nav" aria-label="Navegación principal">
+    <a routerLink="/rooms" class="bottom-nav-item">
+      <span class="bottom-nav-icon" aria-hidden="true">⌂</span> Inicio
+    </a>
+    <a routerLink="/rooms/join" class="bottom-nav-item">
+      <span class="bottom-nav-icon" aria-hidden="true">↪</span> Unirme
+    </a>
+    <a routerLink="/rooms/new" class="bottom-nav-item bottom-nav-item--create">
+      <span class="bottom-nav-icon" aria-hidden="true">+</span> Crear sala
+    </a>
+    <a routerLink="/profile" class="bottom-nav-item" aria-current="page">
+      <span class="bottom-nav-icon" aria-hidden="true">◎</span> Mi perfil
+    </a>
+  </nav>
 </div>
