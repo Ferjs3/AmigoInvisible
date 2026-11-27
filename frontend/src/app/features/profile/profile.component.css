@@ -1,40 +1,74 @@
-.profile-title {
-  margin-top: 12px;
-  margin-bottom: 4px;
+.profile-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.profile-heading .title,
+.saved-msg {
+  margin: 0;
 }
 
 .saved-msg {
   color: var(--success);
 }
 
-.avatar-preview-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 4px;
+.avatar-options {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
 }
 
-.icon-picker {
-  flex: 1;
+.avatar-options legend {
+  padding: 0;
+  margin-bottom: 6px;
 }
 
-.avatar-icon-option {
-  width: auto;
+.profile-icons,
+.avatar-colors {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 44px));
+  gap: 4px;
+}
+
+.avatar-icon-option,
+.avatar-swatch {
+  width: 100%;
+  aspect-ratio: 1;
   height: auto;
-  padding: 3px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid transparent;
   background: transparent;
-  border-color: transparent;
+  cursor: pointer;
 }
 
-.security-section {
-  border-top: 1px solid color-mix(in srgb, var(--fg) 10%, transparent);
-  padding-top: 14px;
+.avatar-icon-option[aria-pressed='true'],
+.avatar-swatch[aria-pressed='true'] {
+  border-color: var(--primary);
 }
 
-.security-toggle {
-  margin-top: 8px;
+.avatar-icon-option:hover,
+.avatar-swatch:hover {
+  background: var(--surface-dim);
 }
 
-.security-fields {
-  margin-top: 10px;
+.avatar-swatch::before {
+  content: '';
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--swatch);
+}
+
+.profile-install {
+  display: block;
+}
+
+.profile-install:not(:empty) {
+  margin-top: 16px;
 }

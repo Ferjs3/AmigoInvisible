@@ -63,11 +63,11 @@ export class RoomLobbyComponent implements OnInit, OnDestroy {
   private roomId!: number;
   private pollSub?: Subscription;
 
-  tabs: { id: Tab; label: string }[] = [
-    { id: 'resumen', label: 'Resumen' },
-    { id: 'amigo', label: 'Mi amigo invisible' },
-    { id: 'tablon', label: 'Tablón' },
-    { id: 'preguntas', label: 'Preguntas' },
+  tabs: { id: Tab; label: string; icon: string }[] = [
+    { id: 'resumen', label: 'Resumen', icon: '▤' },
+    { id: 'amigo', label: 'Mi amigo', icon: '◇' },
+    { id: 'tablon', label: 'Deseos', icon: '☆' },
+    { id: 'preguntas', label: 'Preguntas', icon: '?' },
   ];
 
   constructor(
@@ -83,6 +83,7 @@ export class RoomLobbyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.roomId = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.route.snapshot.queryParamMap.get('tab') === 'amigo') this.tab.set('amigo');
     this.load(this.roomId);
     this.startPolling();
   }

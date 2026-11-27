@@ -1,5 +1,6 @@
-<span class="avatar" [class.avatar--sm]="size === 'sm'" [class.avatar--lg]="size === 'lg'">
-  @switch (icon) {
+<span class="avatar" [class.avatar--sm]="size === 'sm'" [class.avatar--lg]="size === 'lg'"
+  [class.avatar--colored]="iconColor" [style.--avatar-color]="iconColor">
+  @switch (iconKey) {
     @case ('gamepad') {
       <!-- Joystick Gamer -->
       <svg viewBox="0 0 40 40" class="avatar-svg" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -76,6 +77,60 @@
         <path d="M10 20c0-6 4-11 10-11s10 5 10 11v11l-3-2-3.5 2-3.5-2-3.5 2-3.5-2-3 2V20z" />
         <circle cx="16" cy="18" r="1.5" fill="currentColor" />
         <circle cx="24" cy="18" r="1.5" fill="currentColor" />
+      </svg>
+    }
+    @case ('heart') {
+      <svg viewBox="0 0 40 40" class="avatar-svg" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 33 8 22a7 7 0 0 1 12-8 7 7 0 0 1 12 8Z" />
+      </svg>
+    }
+    @case ('star') {
+      <svg viewBox="0 0 40 40" class="avatar-svg" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m20 6 4 9 10 1-8 7 2 10-8-5-9 5 2-10-7-7 10-1Z" />
+      </svg>
+    }
+    @case ('moon') {
+      <svg viewBox="0 0 40 40" class="avatar-svg" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M31 24A13 13 0 0 1 17 8a13 13 0 1 0 14 16Z" />
+      </svg>
+    }
+    @case ('bolt') {
+      <svg viewBox="0 0 40 40" class="avatar-svg" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m22 5-13 17h10l-1 13 13-18H21Z" />
+      </svg>
+    }
+    @case ('gift') {
+      <svg viewBox="0 0 40 40" class="avatar-svg" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 19h24v14H8z M6 13h28v6H6z M20 13v20 M20 13c-8 0-11-2-9-6s7-1 9 6c3-7 8-10 10-6s-2 6-10 6Z" />
+      </svg>
+    }
+    @case ('mountain') {
+      <svg viewBox="0 0 40 40" class="avatar-svg" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 31 16 11l6 10 4-6 9 16Z M12 19l4 3 3-4" />
+      </svg>
+    }
+    @case ('music') {
+      <svg viewBox="0 0 40 40" class="avatar-svg" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M16 28V12l14-4v16 M16 28c0 4-9 7-9 2s9-6 9-2Z M30 24c0 4-9 7-9 2s9-6 9-2Z" />
+      </svg>
+    }
+    @case ('rocket') {
+      <svg viewBox="0 0 40 40" class="avatar-svg" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 25c-2-7 4-15 15-18 0 11-6 18-13 18Z M14 18l-6 3-1 6 8-2 M22 24l-2 7-6 3 1-8 M11 29l-4 5 M23 15h.1" />
+      </svg>
+    }
+    @case ('snowflake') {
+      <svg viewBox="0 0 40 40" class="avatar-svg" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6v28 M8 13l24 14 M8 27l24-14 M16 9l4 4 4-4 M16 31l4-4 4 4 M8 18l5-2-1-5 M32 22l-5 2 1 5 M8 22l5 2-1 5 M32 18l-5-2 1-5" />
       </svg>
     }
     @default {

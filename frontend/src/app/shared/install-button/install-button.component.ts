@@ -10,13 +10,11 @@ import { InstallPromptService } from '../../core/services/install-prompt.service
   styleUrl: './install-button.component.css',
 })
 export class InstallButtonComponent {
-  dismissed = signal(false);
   showIosHelp = signal(false);
 
   constructor(public installPrompt: InstallPromptService) {}
 
   shouldShow(): boolean {
-    if (this.dismissed()) return false;
     if (this.installPrompt.isStandalone()) return false;
     return this.installPrompt.canPromptInstall() || this.installPrompt.isIos;
   }

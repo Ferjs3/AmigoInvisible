@@ -1,5 +1,5 @@
 @if (room()) {
-  <div class="page">
+  <div class="page page--bottom-nav">
     <div class="lobby-container">
       <!-- Header estilo ticket -->
       <div class="ticket-header">
@@ -12,7 +12,6 @@
             </div>
           }
         </div>
-        <p class="eyebrow ticket-eyebrow">Sala de amigo invisible</p>
         <div class="ticket-title-row">
           <h1 class="title ticket-title">
             <span class="ticket-icon">{{ room()!.icon ?? '🎁' }}</span>
@@ -23,36 +22,9 @@
             <span class="code-chip-status">{{ copied() ? '✓ Copiado' : '⧉' }}</span>
           </button>
         </div>
-        <div class="ticket-meta">
-          <span>{{ room()!.eventDate ? (room()!.eventDate | date: 'dd/MM/yyyy') : 'Sin fecha' }}</span>
-          <span>{{ room()!.place ?? ' Sin lugar definido' }}</span>
-          @if (room()!.suggestedBudget) {
-            <span>Hasta &#36;{{ room()!.suggestedBudget }}</span>
-          }
-          @if (daysUntilEvent() !== null) {
-            <span class="days-counter">
-              @if (daysUntilEvent()! > 0) {
-                Faltan {{ daysUntilEvent() }} {{ daysUntilEvent() === 1 ? 'día' : 'días' }}
-              } @else if (daysUntilEvent() === 0) {
-                ¡Es hoy!
-              } @else {
-                Ya pasó
-              }
-            </span>
-          }
-        </div>
         <button (click)="shareInvite()" class="btn btn--outline btn--sm invite-btn">
           {{ sharing() ? 'Copiado ✓' : 'Invitar por WhatsApp / compartir' }}
         </button>
-      </div>
-
-      <!-- Tabs -->
-      <div class="tabs-row">
-        @for (t of tabs; track t.id) {
-          <button (click)="tab.set(t.id)" class="tab-button" [class.tab-button--active]="tab() === t.id">
-            {{ t.label }}
-          </button>
-        }
       </div>
 
       @if (error()) {
@@ -90,6 +62,30 @@
                 <app-exclusions-manager [roomId]="room()!.id" [participants]="room()!.participants" />
               </div>
             }
+            <details class="lobby-section-divider room-details">
+              <summary>Detalles de la sala</summary>
+        <div class="ticket-meta">
+          <span>{{ room()!.eventDate ? (room()!.eventDate | date: 'dd/MM/yyyy') : 'Sin fecha' }}</span>
+          <span>{{ room()!.place ?? ' Sin lugar definido' }}</span>
+          @if (room()!.suggestedBudget) {
+            <span>Hasta &#36;{{ room()!.suggestedBudget }}</span>
+          }
+          @if (daysUntilEvent() !== null) {
+            <span class="days-counter">
+              @if (daysUntilEvent()! > 0) {
+                Faltan {{ daysUntilEvent() }} {{ daysUntilEvent() === 1 ? 'día' : 'días' }}
+              } @else if (daysUntilEvent() === 0) {
+                ¡Es hoy!
+              } @else {
+                Ya pasó
+              }
+            </span>
+          }
+        </div>
+              @if (room()!.notes) {
+                <p class="room-notes">{{ room()!.notes }}</p>
+              }
+            </details>
           }
           @case ('amigo') {
             @if (room()!.status === 'SEALED') {
@@ -135,6 +131,19 @@
           }
         }
       </div>
+      <nav class="bottom-nav" aria-label="Secciones de la sala">
+        <a routerLink="/rooms" class="bottom-nav-item">
+          <span class="bottom-nav-icon" aria-hidden="true">⌂</span>
+          Inicio
+        </a>
+        @for (t of tabs; track t.id) {
+          <button type="button" class="bottom-nav-item" (click)="tab.set(t.id)"
+            [attr.aria-current]="tab() === t.id ? 'page' : null">
+            <span class="bottom-nav-icon" aria-hidden="true">{{ t.icon }}</span>
+            {{ t.label }}
+          </button>
+        }
+      </nav>
     </div>
   </div>
 

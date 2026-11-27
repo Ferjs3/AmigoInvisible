@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AVATAR_COLORS, readAvatar } from '../../core/constants/avatar-icons';
 
 @Component({
   selector: 'app-avatar',
@@ -10,7 +11,16 @@ import { CommonModule } from '@angular/common';
 })
 export class AvatarComponent {
   @Input({ required: true }) name!: string;
-  @Input() icon: string | null = null;
+  iconKey: string | null = null;
+  iconColor: string | null = null;
+
+  @Input() set icon(value: string | null) {
+    const avatar = readAvatar(value);
+    this.iconKey = avatar.icon;
+    this.iconColor = avatar.color
+      ? AVATAR_COLORS.find(option => option.key === avatar.color)?.color ?? null
+      : null;
+  }
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
 
   initials(): string {
